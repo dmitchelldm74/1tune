@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1tune</title>
+    <link rel="icon" href="http://www.clipartbest.com/cliparts/RcA/7ro/RcA7ropcL.png">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <script>
+    function load(){
+    var a = window.location.href;
+    var b = a.split("?");
+    var c = b[1].split("&user&password");
+    document.getElementById("home").href = "/?" + c[0] + "&user&password" + c[1];
+}
+    function add(){
+    var ekl = document.getElementById("buy");
+    var a = window.location.href;
+    var b = a.split("?");
+    var c = b[1].split("&user&password");
+    window.location.href = "/buy/" + c[0] + "/" + c[1] + "/" + document.getElementById("idpro").value;
+}
+    function add_id(di){
+    document.getElementById("idpro").value = di;
+    document.getElementById("purchase").click();
+    }
+    </script>
+</head>
+<body onload="load();">
+
+<a class="button button1" id="home" href="/">Home</a>
+<p>You have <h1>${{ amount }}</h1> on this account.</p>
+{% autoescape false %}
+<div id="content">{{ page }}</div>
+{% endautoescape %}
+<input id="idpro" type="text" Placeholder="Product Id..."/>
+<input id="purchase" class="button button1" onclick="add();" type="submit" value="Purchase"/>
+</body>
+</html>    

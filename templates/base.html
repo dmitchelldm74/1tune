@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1tune</title>
+    <link rel="icon" href="http://www.clipartbest.com/cliparts/RcA/7ro/RcA7ropcL.png">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='tabs.js') }}"></script>
+    <script src="{{ url_for('static', filename='carousel.js') }}"></script>
+    <script src="{{ url_for('static', filename='redeem.js') }}"></script>
+    <script>
+    function signin(){
+        var user = document.getElementById("sname").value;
+        var pass = document.getElementById("spass").value;
+        window.location.href = "/?" + user + "&user&password" + pass;
+    }
+    function add(){
+    var ekl = document.getElementById("buy");
+    var a = window.location.href;
+    var b = a.split("?");
+    var c = b[1].split("&user&password");
+    window.location.href = "/buy/" + c[0] + "/" + c[1] + "/" + document.getElementById("idpro").value;
+}
+    function add_id(di){
+    document.getElementById("idpro").value = di;
+    document.getElementById("purchase").click();
+    }
+    </script>
+</head>
+<body>
+<center>
+<ul class="slider">
+  <li>
+    <img width="100%" height="400px" src="{{ url_for('static', filename='1tune.png') }}"> 
+  </li>
+  <li>
+    <img width="100%" height="400px" src="{{ url_for('static', filename='1tune.png') }}"> 
+  </li>
+  <li>
+    <img width="100%" height="400px" src="{{ url_for('static', filename='1tune.png') }}"> 
+  </li>
+  <li>
+    <img width="100%" height="400px" src="{{ url_for('static', filename='1tune.png') }}"> 
+  </li>
+</ul>
+</center>
+<div class="container">
+
+	<ul class="tabs">
+		<li class="tab-link current" data-tab="tab-1"><h1>Home</h1></li>
+		<li class="tab-link" data-tab="tab-6"><h1>Sign-in or Create an Account</h1></li>
+		<li class="tab-link" data-tab="tab-2"><h1>MyMusic</h1></li>
+		<li class="tab-link" data-tab="tab-3"><h1>Browse</h1></li>
+		<li class="tab-link" data-tab="tab-4"><h1>Redeem Card</h1></li>
+		<li class="tab-link" data-tab="tab-5"><h1>Add Tune</h1></li>
+	</ul>
+
+	<div id="tab-1" class="tab-content current">
+		<h2>1tunes</h2>
+	</div>
+	<div id="tab-2" class="tab-content">
+		 <h2>Your Music:</h2>
+		{% autoescape false %}
+		{{ mytunes }}
+		{% endautoescape %}
+	</div>
+	<div id="tab-3" class="tab-content">
+		<h2>Browse Tunes:</h2>
+		<input class="full" Placeholder="Search by Artist..." id="search" type="text"/>
+		<script>
+        $("#search").bind('keypress', function(e)
+        {
+        if(e.which == 13) 
+        {
+        var ha = window.location.href;
+        var ah = ha.split("?");
+        window.location.href = ah[0] + "album/" + document.getElementById("search").value + "?" + ah[1];
+        }
+        });
+		</script>
+		{% autoescape false %}
+		<p>{{ tunes }}</p>
+		{% endautoescape %}
+		<input id="idpro" type="text" Placeholder="Product Id..."/>
+        <input id="purchase" class="button button1" onclick="add();" type="submit" value="Purchase"/>
+	</div>
+	<div id="tab-4" class="tab-content">
+		<h2>Redeem 1tune Music Card:</h2>
+		<form id="ac2" action="/redeem/1tune" method="post">
+		<input class="full" name="code" placeholder="Your Code here..." type="text"/>
+		<input class="button button1" onclick="get_user('1tune');" type="submit" value="Redeem"/>
+		</form>
+		<h2>Redeem DEMo Music Card:</h2>
+		<form id="ac" action="/redeem/demo" method="post">
+		<input class="full" name="code" placeholder="Your Code here..." type="text"/>
+		<input class="button button1" onclick="get_user('demo');" type="submit" value="Redeem"/>
+		</form>
+	</div>
+    <div id="tab-5" class="tab-content">
+		 <h2>Add a tune:</h2>
+		 <form action="/upload" method="post" enctype="multipart/form-data">
+        <input class="full" placeholder="Name..." name="artist" type="text"/>
+        <input class="full" placeholder="Password..." name="apass" type="password"/>
+        <label>Add a file:&nbsp;<input type="file" name="file">(*.ogg, *.mp3, and *.wav)</label>
+        <input class="full" placeholder="Type..." name="type" type="text"/>
+        <input class="full" placeholder="Artist Name..." name="artistname" type="text"/>
+        <input class="full" placeholder="Song Name..." name="songname" type="text"/>
+        <input class="full" placeholder="Cost (leave blank for free)..." name="cost" type="text"/>
+        (you will be paid monthly)
+        <textarea class="full" placeholder="Description..." name="des"></textarea>
+        <input class="button button1" id="cli" type="submit" value="Add to the 1tunes Library">
+        
+      </form>
+      
+	</div>
+	<div id="tab-6" class="tab-content">
+		 <h2>Sign-in:</h2>
+		 <input class="full" placeholder="Username..." id="sname" type="text"/>
+		 <input class="full" placeholder="Password..." id="spass" type="password"/>
+		 <button class="button button1" onclick="signin();">Sign-in</button>
+		 <h2>Create an Account</h2>
+		 <form action="/create" method="post">
+		 <input class="full" placeholder="Username..." name="name" type="text"/>
+		 <input class="full" placeholder="Email..." name="email" type="text"/>
+		 <input class="full" placeholder="Password..." name="pass" type="password"/>
+		 <input class="button button1" type="submit" value="Create Account"/>
+		 </form>
+	</div>
+</div>
+    {% block body %}{% endblock %}
+</body>
+</html>

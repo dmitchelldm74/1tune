@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block body %}
+<script>
+function act(){
+var a = window.location.href;
+var b = a.split("/");
+document.getElementById("f1ac").action = "/admin/" + b[4];
+}
+</script>
+    <h2>Generate Gift Card or code:</h2>
+    <form id="f1ac" action="" method="post">
+        $<input id="val" type="text" Placeholder="Code value..." name="val"/>
+        <input class="button button1" onclick="act();" type="submit" value="Generate"><br/>
+    </form>
+
+    {% if info %}
+        <h3>Code Generated:</h3>
+        <p>Code: {{ info['code'] }} Value: {{ info['val'] }}</p>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block body %}
+<script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="{{ url_for('static', filename='tabs.js') }}"></script>
+<script src="{{ url_for('static', filename='carousel.js') }}"></script>
+<script src="{{ url_for('static', filename='redeem.js') }}"></script>
+</head>
+<body>
+<center>
+<ul class="slider">
+  <li>
+    <img width="100%" height="400px" src=""> 
+  </li>
+  <li>
+    <img width="100%" height="400px" src=""> 
+  </li>
+  <li>
+    <img width="100%" height="400px" src=""> 
+  </li>
+  <li>
+    <img width="100%" height="400px" src=""> 
+  </li>
+</ul>
+</center>
+<div class="container">
+
+	<ul class="tabs">
+		<li class="tab-link current" data-tab="tab-1"><h1>Home</h1></li>
+		<li class="tab-link" data-tab="tab-2"><h1>MyMusic</h1></li>
+		<li class="tab-link" data-tab="tab-3"><h1>Browse</h1></li>
+		<li class="tab-link" data-tab="tab-4"><h1>Redeem Card</h1></li>
+	</ul>
+
+	<div id="tab-1" class="tab-content current">
+		<h2>1tunes</h2>
+	</div>
+	<div id="tab-2" class="tab-content">
+		 <h2>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h2>
+	</div>
+	<div id="tab-3" class="tab-content">
+		<h2>GUMB will be on tour the 8th of May at LEBC</h2> <a href="https://www.google.com/maps/place/22530+Bolender+Pontious+Rd,+Circleville,+OH+43113/@39.599846,-82.89678,17z/data=!3m1!4b1!4m2!3m1!1s0x884782ad5340a645:0x28e34875add08065">View Directions</a>
+	</div>
+	<div id="tab-4" class="tab-content">
+		<h2>Redeem 1tune Music Card</h2>
+		<form action="/redeem/1tune" method="post">
+		<input class="full" name="code" placeholder="Your Code here..." type="text"/>
+		<input type="submit" value="Redeem"/>
+		</form>
+		<h2>Redeem DEMo Music Card</h2>
+		<form action="/redeem/demo" method="post">
+		<input class="full" name="code" placeholder="Your Code here..." type="text"/>
+		<input type="submit" value="Redeem"/>
+		</form>
+	</div>
+
+</div>
+</body>
+</html>
+{% endblock %}
