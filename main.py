@@ -171,7 +171,7 @@ def upload():
     url = "album?%s&user&password%s" % (user, ps)
     if cost == "":
         cost = "0"
-    song = '<audio class="my_audio" controls><source src="http://127.0.0.1:9000/uploads/%s" type="audio/%s"></audio>' % (file.filename, typ)     
+    song = '<audio class="my_audio" controls><source src="http://162.243.6.91:9000/uploads/%s" type="audio/%s"></audio>' % (file.filename, typ)     
     f = open(user, "r")
     f2 = f.read()
     f.close()
