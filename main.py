@@ -64,7 +64,7 @@ def buy(user, password, id1):
             f.write("\n" + f5[1] + "\n")
             f.close()          
             return """
-            <body onload='alert("Purchase Success!"); window.location.href = "/%s"'>
+            <body onload='alert("Music Added to Your Library!"); window.location.href = "/%s"'>
             """ % url
         else:
             return """
@@ -160,6 +160,8 @@ def redeem(t, usr, pswd):
 
 @app.route('/upload', methods=['POST'])
 def upload():
+    f4 = request.url
+    f5 = f4.split("/")
     file = request.files['file']
     user = request.form['artist']
     ps = request.form['apass']
@@ -169,14 +171,15 @@ def upload():
     songname = request.form['songname']
     des = request.form['des']
     url = "album?%s&user&password%s" % (user, ps)
+    num = random.randint(0, 8000)
     if cost == "":
         cost = "0"
-    song = '<audio class="my_audio" controls><source src="http://162.243.6.91:9000/uploads/%s" type="audio/%s"></audio>' % (file.filename, typ)     
+    song = '<audio class="my_audio" controls><source src="static/%s" type="audio/%s"></audio>' % (str(num), typ) #file.filename    
     f = open(user, "r")
     f2 = f.read()
     f.close()
     f3 = f2.split("<!>")
-    num = random.randint(0, 8000)
+    
     if ps == f3[2]:
         a = os.path.isfile(str(num))
         f = open(str(num) + ".payment", "w")
@@ -190,9 +193,10 @@ def upload():
             content = """
             <div class="song">
             <h1>%s:%s</h1>
-            <p>%s</p>     
+            <p>%s</p> 
+            <a href="static/%s" download>Download</a>    
             </div>       
-            """ % (aname, songname, song)
+            """ % (aname, songname, song, str(num))
             f.write(content)
             f.close()
             f = open(user + ".lib", "a+")
@@ -207,9 +211,10 @@ def upload():
             content = """
             <div class="song">
             <h1>%s:%s</h1>
-            <p>%s</p>     
+            <p>%s</p>   
+            <a href="static/%s" download>Download</a>   
             </div>       
-            """ % (aname, songname, song)
+            """ % (aname, songname, song, str(num))
             f.write(content)
             f.close()
         f = open(aname + ".artist", "w")
@@ -217,18 +222,20 @@ def upload():
         f = open(aname + ".artist", "r+")
         s = f.read()
         f.seek(0)
+        button = "Add to Library"
         if cost != "0":
             song = "You must first purchase this content before you can listen to it."
+            button = "Buy"
         content = """
         <div class="c">
         <h1>Artist: %s</h1>
         <h2>Song: %s</h2>
         <p>%s</p>  
-        <p>Cost: $%s</p><button class="button button2" onclick="add_id('%s')">Buy</button>
+        <p>Cost: $%s</p><button class="button button2" onclick="add_id('%s')">%s</button>
         <p>Description:<br>%s</p>
         <p>Uploaded by: %s</p> 
         </div>       
-        """ % (aname, songname, song, cost, str(num), des, user)
+        """ % (aname, songname, song, cost, str(num), button, des, user)
         f.write(content + s)
         f.close()
         f = open("Public", "r+")
@@ -241,7 +248,8 @@ def upload():
             filename = secure_filename(file.filename)
    
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-   
+            f = open("uploads/" + filename, "rb").read()
+            open("static/" + str(num), "wb").write(f)
             return redirect(url_for('album2', albumtl=aname, usr=url))
 
 @app.route('/album2/<albumtl>/<usr>')
